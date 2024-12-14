@@ -1,11 +1,16 @@
 package main.java;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
+
 
 public class Task {
+    public enum Status {TODO, IN_PROGRESS, DONE}
+
     private int id;
     private String description;
-    private String status;
+    private Status status;
+    private ZonedDateTime createdAt;
+    private ZonedDateTime updatedAt;
 
     protected int getId() {
         return id;
@@ -23,30 +28,33 @@ public class Task {
         this.description = description;
     }
 
-    protected String getStatus() {
+    protected Status getStatus() {
         return status;
     }
 
-    protected void setStatus(String status) {
+    protected void setStatus(Status status) {
         this.status = status;
     }
 
-    protected Date getUpdatedAt() {
-        return (Date) this.updatedAt.clone();
+    protected ZonedDateTime getUpdatedAt() {
+        return this.updatedAt;
     }
 
-    protected void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = (Date) updatedAt.clone();
+    protected void setUpdatedAt(ZonedDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    protected Date getCreatedAt() {
-        return (Date) this.createdAt.clone();
+    protected ZonedDateTime getCreatedAt() {
+        return this.createdAt;
     }
 
-    protected void setCreatedAt(Date createdAt) {
-        this.createdAt = (Date) createdAt.clone();
+    protected void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    private Date createdAt;
-    private Date updatedAt;
+
+    @Override
+    public String toString() {
+        return id + "|" + description + "|" + status + "|" + createdAt + "|" + updatedAt;
+    }
 }
