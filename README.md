@@ -48,3 +48,8 @@ Output: Task added successfully (ID: 1)
 `task-cli list done`\
 `task-cli list todo`\
 `task-cli list in-progress`
+
+# Interacting in CLI (Dev)
+From the root directory, execute the following commands to:
+- compile: `$ javac -d out/production/cli-task-tracker src/main/java/Main.java`
+- run: `$ java -cp out/production/cli-task-tracker main.java.Main hello world`
