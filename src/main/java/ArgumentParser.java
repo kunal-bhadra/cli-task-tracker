@@ -2,6 +2,7 @@ package main.java;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,7 +19,7 @@ public class ArgumentParser {
         }
     }
 
-    public void parseArguments(String[] args) {
+    public Task parseArguments(String[] args, boolean jsonExists) {
         // Make an object of Task
         Task task = new Task();
 
@@ -31,10 +32,11 @@ public class ArgumentParser {
             String description = args[1];
             task.setDescription(description);
             task.setId(count.incrementAndGet());
-            task.setCreatedAt(ZonedDateTime.now(zone));
-            task.setUpdatedAt(ZonedDateTime.now(zone));
+            task.setCreatedAt(ZonedDateTime.now(zone).truncatedTo(ChronoUnit.SECONDS));
+            task.setUpdatedAt(ZonedDateTime.now(zone).truncatedTo(ChronoUnit.SECONDS));
             task.setStatus(Task.Status.TODO);
-            System.out.println(task);
         }
+
+        return task;
     }
 }

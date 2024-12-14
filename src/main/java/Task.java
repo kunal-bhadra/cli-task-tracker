@@ -12,6 +12,11 @@ public class Task {
     private ZonedDateTime createdAt;
     private ZonedDateTime updatedAt;
 
+    @Override
+    public String toString() {
+        return id + "|" + description + "|" + status + "|" + createdAt + "|" + updatedAt;
+    }
+
     protected int getId() {
         return id;
     }
@@ -52,9 +57,28 @@ public class Task {
         this.createdAt = createdAt;
     }
 
+    protected String stringToJson(String value) {
+        return "\"" + value + "\"";
+    }
 
-    @Override
-    public String toString() {
-        return id + "|" + description + "|" + status + "|" + createdAt + "|" + updatedAt;
+    protected String numberToJson(int value) {
+        return stringToJson(Integer.toString(value));
+    }
+
+    protected String enumToJson(Status value) {
+        return stringToJson(value.toString());
+    }
+
+    protected String dateToJson(ZonedDateTime value) {
+        return stringToJson(value.toLocalDateTime().toString());
+    }
+
+    public String toJson() {
+        return "{" + stringToJson("id") + ":" + numberToJson(id) + "," +
+                stringToJson("description") + ":" + stringToJson(description) + "," +
+                stringToJson("status") + ":" + enumToJson(status) + "," +
+                stringToJson("createdAt") + ":" + dateToJson(createdAt) + "," +
+                stringToJson("updatedAt") + ":" + dateToJson(updatedAt) +
+                "}";
     }
 }
