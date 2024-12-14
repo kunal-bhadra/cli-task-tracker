@@ -27,7 +27,7 @@ Each task should have the following properties:
 - createdAt: The date and time when the task was created
 - updatedAt: The date and time when the task was last updated
 
-Example
+# Example
 The list of commands and their usage is given below:
 - Adding a new task\
 `task-cli add "Buy groceries"`\
