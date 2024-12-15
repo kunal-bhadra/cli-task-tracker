@@ -105,6 +105,24 @@ public class ArgumentParser {
         return getCompleteJsonString(tasks);
     }
 
+    public String deleteTask(String[] args, boolean jsonExists, String jsonPath) {
+        if(!jsonExists) {
+            throw new IllegalArgumentException("JSON File missing!");
+        }
+        if (args.length < 2) {
+            throw new IllegalArgumentException("Exactly 2 arguments are required!");
+        }
+        if (!isInt(args[1])) {
+            throw new IllegalArgumentException("The 2nd argument should be numerical ID!");
+        }
+
+        // Delete this task from the list
+        int taskId = Integer.parseInt(args[1]);
+        List<Task> tasks = jsonParser.deleteTask(jsonPath, taskId);
+
+        return getCompleteJsonString(tasks);
+    }
+
     public String parseArguments(String[] args, boolean jsonExists, String jsonPath) {
 
         if (isInt(args[0])) {
@@ -117,6 +135,7 @@ public class ArgumentParser {
             case "list" -> listTasks(args, jsonExists, jsonPath);
             case "update" -> updateTask(args, jsonExists, jsonPath);
             case "mark-in-progress", "mark-done" -> markTask(args, jsonExists, jsonPath);
+            case "delete" -> deleteTask(args, jsonExists, jsonPath);
             default -> throw new IllegalArgumentException("First argument is invalid!");
         };
     }

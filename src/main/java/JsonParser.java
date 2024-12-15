@@ -105,6 +105,12 @@ public class JsonParser {
         return tasks;
     }
 
+    public List<Task> deleteTask(String filePath, int taskId) {
+        List<Task> tasks = parseJson(filePath);
+        tasks.removeIf(task -> task.getId() == taskId);
+        return tasks;
+    }
+
     public List<Task> addTask(String filePath, String description, boolean jsonExists) {
 
         // Find max ID if JSON file already exists
