@@ -52,4 +52,12 @@ public class JsonParser {
 
         return maxId;
     }
+
+    public void listAllTasks(String filePath) {
+        List<Task> tasks = parseJson(filePath);
+
+        for(Task task : tasks) {
+            System.out.println(task);
+        }
+    }
 }

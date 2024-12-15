@@ -1,6 +1,8 @@
 package main.java;
 
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 
 public class Task {
@@ -14,7 +16,11 @@ public class Task {
 
     @Override
     public String toString() {
-        return id + "|" + description + "|" + status + "|" + createdAt + "|" + updatedAt;
+        return "ID:" + id +
+                " Status:" + status +
+                " - Description:\"" + description +
+                "\" - Created At:" + createdAt.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)) +
+                " - Updated At:" + updatedAt.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM));
     }
 
     protected int getId() {

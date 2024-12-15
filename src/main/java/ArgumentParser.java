@@ -54,15 +54,17 @@ public class ArgumentParser {
             throw new IllegalArgumentException("JSON File missing!");
         }
 
-        // Print required tasks
+        // Print tasks with required Status
         if (args.length == 2) {
             String requiredStatus = args[1];
             if (!requiredStatus.matches("done|todo|in-progress")) {
                 throw new IllegalArgumentException("Only the following status is valid: done, todo, in-progress");
             }
-            // list tasks with requiredStatus
+
         }
 
+        // Print all tasks
+        jsonParser.listAllTasks(jsonPath);
 
         return "NA";
     }

@@ -7,7 +7,6 @@ import java.io.IOException;
 
 public class ExportJson {
     public void writeJson(String jsonString, boolean jsonExists, String jsonPath) throws IOException {
-        System.out.println(jsonString);
 
         if (!jsonExists) {
             try {
@@ -17,7 +16,7 @@ public class ExportJson {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        } else {
+        } else if (!jsonString.equals("NA")) {
             try {
                 // Read JSON file content
                 StringBuilder existingData = new StringBuilder();
