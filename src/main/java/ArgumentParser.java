@@ -56,13 +56,17 @@ public class ArgumentParser {
 
         // Print tasks with required Status
         if (args.length == 2) {
-            String requiredStatus = args[1];
-            if (!requiredStatus.matches("done|todo|in-progress")) {
+            String listStatus = args[1];
+            if (!listStatus.matches("done|todo|in-progress")) {
                 throw new IllegalArgumentException("Only the following status is valid: done, todo, in-progress");
             }
-
+            for (Task.Status s : Task.Status.values()) {
+                if (s.getListStatus().equals(listStatus)) {
+                    jsonParser.listRequiredTasks(jsonPath, listStatus);
+                    return "NA";
+                }
+            }
         }
-
         // Print all tasks
         jsonParser.listAllTasks(jsonPath);
 

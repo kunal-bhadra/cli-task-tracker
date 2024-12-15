@@ -60,4 +60,14 @@ public class JsonParser {
             System.out.println(task);
         }
     }
+
+    public void listRequiredTasks(String filePath, String requiredStatus) {
+        List<Task> tasks = parseJson(filePath);
+
+        for(Task task : tasks) {
+            if (task.getStatus().getListStatus().equals(requiredStatus)) {
+                System.out.println(task);
+            }
+        }
+    }
 }

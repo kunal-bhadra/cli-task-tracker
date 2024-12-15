@@ -6,7 +6,27 @@ import java.time.format.FormatStyle;
 
 
 public class Task {
-    public enum Status {TODO, IN_PROGRESS, DONE}
+    protected enum Status {
+        TODO("todo", "add"),
+        IN_PROGRESS("in-progress", "mark-in-progress"),
+        DONE("done", "mark-done");
+
+        private final String listStatus;
+        private final String markStatus;
+
+        Status(String listStatus, String markStatus) {
+            this.listStatus = listStatus;
+            this.markStatus = markStatus;
+        }
+
+        public String getListStatus() {
+            return listStatus;
+        }
+
+        public String getMarkStatus() {
+            return markStatus;
+        }
+    }
 
     private int id;
     private String description;
