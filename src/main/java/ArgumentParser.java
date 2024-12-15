@@ -1,14 +1,9 @@
 package main.java;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ArgumentParser {
 
-    ZoneId zone = ZoneId.of("Asia/Kolkata");
     JsonParser jsonParser = new JsonParser();
 
     public boolean isInt(String str) {
@@ -71,7 +66,7 @@ public class ArgumentParser {
         return "NA";
     }
 
-    public String updateTasks(String[] args, boolean jsonExists, String jsonPath) {
+    public String updateTask(String[] args, boolean jsonExists, String jsonPath) {
 
         if(!jsonExists) {
             throw new IllegalArgumentException("JSON File missing!");
@@ -91,6 +86,25 @@ public class ArgumentParser {
         return getCompleteJsonString(tasks);
     }
 
+    public String markTask(String[] args, boolean jsonExists, String jsonPath) {
+        if(!jsonExists) {
+            throw new IllegalArgumentException("JSON File missing!");
+        }
+        if (args.length < 2) {
+            throw new IllegalArgumentException("Exactly 2 arguments are required!");
+        }
+        if (!isInt(args[1])) {
+            throw new IllegalArgumentException("The 2nd argument should be numerical ID!");
+        }
+
+        // Update the Status for that task
+        int taskId = Integer.parseInt(args[1]);
+        String markStatus = args[0];
+        List<Task> tasks = jsonParser.markTask(jsonPath, taskId, markStatus);
+
+        return getCompleteJsonString(tasks);
+    }
+
     public String parseArguments(String[] args, boolean jsonExists, String jsonPath) {
 
         if (isInt(args[0])) {
@@ -101,7 +115,8 @@ public class ArgumentParser {
         return switch (action) {
             case "add" -> addNewTask(args, jsonExists, jsonPath);
             case "list" -> listTasks(args, jsonExists, jsonPath);
-            case "update" -> updateTasks(args, jsonExists, jsonPath);
+            case "update" -> updateTask(args, jsonExists, jsonPath);
+            case "mark-in-progress", "mark-done" -> markTask(args, jsonExists, jsonPath);
             default -> throw new IllegalArgumentException("First argument is invalid!");
         };
     }

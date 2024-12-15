@@ -88,6 +88,23 @@ public class JsonParser {
         return tasks;
     }
 
+    public List<Task> markTask(String filePath, int taskId, String markStatus) {
+        List<Task> tasks = parseJson(filePath);
+
+        for(Task task : tasks) {
+            if (task.getId() == taskId) {
+                for (Task.Status s : Task.Status.values()) {
+                    if (s.getMarkStatus().equals(markStatus)) {
+                        task.setStatus(s);
+                        task.setUpdatedAt(ZonedDateTime.now(zone).truncatedTo(ChronoUnit.SECONDS));
+                    }
+                }
+            }
+        }
+
+        return tasks;
+    }
+
     public List<Task> addTask(String filePath, String description, boolean jsonExists) {
 
         // Find max ID if JSON file already exists

@@ -11,6 +11,7 @@ class Main {
         boolean jsonExists = false;
 
         if (args.length > 0) {
+
             // Print out all CLI arguments
             System.out.println("The command line arguments are:");
             for (String arg : args) {
