@@ -1,22 +1,15 @@
 package main.java;
 
 import java.io.File;
-import java.io.IOException;
 
 class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ArgumentParser driver = new ArgumentParser();
         final String JSON_PATH = "notes.json";
         boolean jsonExists = false;
 
         if (args.length > 0) {
-
-            // Print out all CLI arguments
-            System.out.println("The command line arguments are:");
-            for (String arg : args) {
-                System.out.println(arg);
-            }
 
             // Check if JSON file exists
             File f = new File(JSON_PATH);
@@ -32,8 +25,7 @@ class Main {
             writer.writeJson(jsonString, JSON_PATH);
 
         } else {
-            System.out.println("No command line arguments found.");
+            throw new IllegalArgumentException("No CLI arguments found!");
         }
-
     }
 }

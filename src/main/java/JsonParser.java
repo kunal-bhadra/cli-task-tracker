@@ -60,6 +60,7 @@ public class JsonParser {
     public void listAllTasks(String filePath) {
         List<Task> tasks = parseJson(filePath);
 
+        System.out.println("All tasks:");
         for(Task task : tasks) {
             System.out.println(task);
         }
@@ -68,6 +69,7 @@ public class JsonParser {
     public void listRequiredTasks(String filePath, String requiredStatus) {
         List<Task> tasks = parseJson(filePath);
 
+        System.out.println(requiredStatus + " tasks:");
         for(Task task : tasks) {
             if (task.getStatus().getListStatus().equals(requiredStatus)) {
                 System.out.println(task);
@@ -78,10 +80,12 @@ public class JsonParser {
     public List<Task> updateTasks(String filePath, int taskId, String newDescription) {
         List<Task> tasks = parseJson(filePath);
 
+        // Filter task by ID and update its description and updatedAt timestamp
         for(Task task : tasks) {
             if (task.getId() == taskId) {
                 task.setDescription(newDescription);
                 task.setUpdatedAt(ZonedDateTime.now(zone).truncatedTo(ChronoUnit.SECONDS));
+                System.out.println("Task updated successfully (ID: " + task.getId() + ")");
             }
         }
 
@@ -91,12 +95,14 @@ public class JsonParser {
     public List<Task> markTask(String filePath, int taskId, String markStatus) {
         List<Task> tasks = parseJson(filePath);
 
+        // Filter task by ID and update its status and updatedAt timestamp
         for(Task task : tasks) {
             if (task.getId() == taskId) {
                 for (Task.Status s : Task.Status.values()) {
                     if (s.getMarkStatus().equals(markStatus)) {
                         task.setStatus(s);
                         task.setUpdatedAt(ZonedDateTime.now(zone).truncatedTo(ChronoUnit.SECONDS));
+                        System.out.println("Task marked successfully (ID: " + task.getId() + ")");
                     }
                 }
             }
@@ -108,6 +114,7 @@ public class JsonParser {
     public List<Task> deleteTask(String filePath, int taskId) {
         List<Task> tasks = parseJson(filePath);
         tasks.removeIf(task -> task.getId() == taskId);
+        System.out.println("Task deleted successfully (ID: " + taskId + ")");
         return tasks;
     }
 

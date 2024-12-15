@@ -7,6 +7,7 @@ public class ArgumentParser {
     JsonParser jsonParser = new JsonParser();
 
     public boolean isInt(String str) {
+        // Check for valid integers from CLI arguments
         try {
             Integer.parseInt(str);
             return true;
@@ -32,10 +33,10 @@ public class ArgumentParser {
 
     public String addNewTask(String[] args, boolean jsonExists, String jsonPath) {
 
+        // Add a new task to the List
         if (args.length < 2) {
             throw new IllegalArgumentException("Exactly 2 arguments are required!");
         }
-
         List<Task> tasks = jsonParser.addTask(jsonPath, args[1], jsonExists);
 
         return getCompleteJsonString(tasks);
@@ -61,8 +62,10 @@ public class ArgumentParser {
                 }
             }
         }
+
         // Print all tasks
         jsonParser.listAllTasks(jsonPath);
+
         return "NA";
     }
 

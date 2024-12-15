@@ -51,10 +51,6 @@ public class Task {
         this.id = id;
     }
 
-    protected String getDescription() {
-        return description;
-    }
-
     protected void setDescription(String description) {
         this.description = description;
     }
@@ -67,16 +63,8 @@ public class Task {
         this.status = status;
     }
 
-    protected ZonedDateTime getUpdatedAt() {
-        return this.updatedAt;
-    }
-
     protected void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    protected ZonedDateTime getCreatedAt() {
-        return this.createdAt;
     }
 
     protected void setCreatedAt(ZonedDateTime createdAt) {
