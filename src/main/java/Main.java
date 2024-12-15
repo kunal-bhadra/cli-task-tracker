@@ -28,7 +28,7 @@ class Main {
 
             // Write to JSON file
             ExportJson writer = new ExportJson();
-            writer.writeJson(jsonString, jsonExists, JSON_PATH);
+            writer.writeJson(jsonString, JSON_PATH);
 
         } else {
             System.out.println("No command line arguments found.");

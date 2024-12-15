@@ -3,6 +3,7 @@ package main.java;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ArgumentParser {
@@ -19,32 +20,30 @@ public class ArgumentParser {
         }
     }
 
+    public String getCompleteJsonString(List<Task> tasks) {
+
+        // Update the entire JSON String
+        StringBuilder fullJsonString = new StringBuilder();
+        for(int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            fullJsonString.append(task.toJson());
+            if (i != tasks.size() - 1) {
+                fullJsonString.append(",\n");
+            }
+        }
+
+        return String.valueOf(fullJsonString);
+    }
+
     public String addNewTask(String[] args, boolean jsonExists, String jsonPath) {
 
-        // Find max ID if JSON file already exists
-        int maxId = 0;
-        if (jsonExists) {
-            maxId = jsonParser.findMaxId(jsonPath);
-        }
-        final AtomicInteger count = new AtomicInteger(maxId);
-
-        // Add a new Task with required fields
-        Task task = new Task();
         if (args.length < 2) {
             throw new IllegalArgumentException("Exactly 2 arguments are required!");
         }
-        if (!isInt(args[1])) {
-            String description = args[1];
-            task.setDescription(description);
-            task.setId(count.incrementAndGet());
-            task.setCreatedAt(ZonedDateTime.now(zone).truncatedTo(ChronoUnit.SECONDS));
-            task.setUpdatedAt(ZonedDateTime.now(zone).truncatedTo(ChronoUnit.SECONDS));
-            task.setStatus(Task.Status.TODO);
-            System.out.println("Task added successfully (ID: " + task.getId() + ")");
-        }
 
-        // Return new JSON entry
-        return task.toJson();
+        List<Task> tasks = jsonParser.addTask(jsonPath, args[1], jsonExists);
+
+        return getCompleteJsonString(tasks);
     }
 
     public String listTasks(String[] args, boolean jsonExists, String jsonPath) {
@@ -69,8 +68,27 @@ public class ArgumentParser {
         }
         // Print all tasks
         jsonParser.listAllTasks(jsonPath);
-
         return "NA";
+    }
+
+    public String updateTasks(String[] args, boolean jsonExists, String jsonPath) {
+
+        if(!jsonExists) {
+            throw new IllegalArgumentException("JSON File missing!");
+        }
+        if (args.length < 3) {
+            throw new IllegalArgumentException("Exactly 3 arguments are required!");
+        }
+        if (!isInt(args[1])) {
+            throw new IllegalArgumentException("The 2nd argument should be numerical ID!");
+        }
+
+        // Update the description for that task
+        int taskId = Integer.parseInt(args[1]);
+        String newDescription = args[2];
+        List<Task> tasks = jsonParser.updateTasks(jsonPath, taskId, newDescription);
+
+        return getCompleteJsonString(tasks);
     }
 
     public String parseArguments(String[] args, boolean jsonExists, String jsonPath) {
@@ -80,12 +98,11 @@ public class ArgumentParser {
         }
 
         String action = args[0];
-        if (action.equals("add")) {
-            return addNewTask(args, jsonExists, jsonPath);
-        } else if (action.equals("list")) {
-            return listTasks(args, jsonExists, jsonPath);
-        } else {
-            throw new IllegalArgumentException("First argument is invalid!");
-        }
+        return switch (action) {
+            case "add" -> addNewTask(args, jsonExists, jsonPath);
+            case "list" -> listTasks(args, jsonExists, jsonPath);
+            case "update" -> updateTasks(args, jsonExists, jsonPath);
+            default -> throw new IllegalArgumentException("First argument is invalid!");
+        };
     }
 }

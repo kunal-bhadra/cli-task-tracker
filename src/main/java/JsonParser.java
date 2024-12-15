@@ -5,15 +5,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class JsonParser {
+    ZoneId zone = ZoneId.of("Asia/Kolkata");
+
     public List<Task> parseJson(String filePath) {
         List<Task> tasks = new ArrayList<>();
-        ZoneId zone = ZoneId.of("Asia/Kolkata");
 
         // Regex pattern to match all fields
         String regex = "\\{\"id\":\"(\\d+)\",\"description\":\"(.*?)\",\"status\":\"(.*?)\",\"createdAt\":\"(.*?)\",\"updatedAt\":\"(.*?)\"}";
@@ -69,5 +73,42 @@ public class JsonParser {
                 System.out.println(task);
             }
         }
+    }
+
+    public List<Task> updateTasks(String filePath, int taskId, String newDescription) {
+        List<Task> tasks = parseJson(filePath);
+
+        for(Task task : tasks) {
+            if (task.getId() == taskId) {
+                task.setDescription(newDescription);
+                task.setUpdatedAt(ZonedDateTime.now(zone).truncatedTo(ChronoUnit.SECONDS));
+            }
+        }
+
+        return tasks;
+    }
+
+    public List<Task> addTask(String filePath, String description, boolean jsonExists) {
+
+        // Find max ID if JSON file already exists
+        int maxId = 0;
+        List<Task> tasks = new ArrayList<>();
+        if (jsonExists) {
+            maxId = findMaxId(filePath);
+            tasks = parseJson(filePath);
+        }
+        final AtomicInteger count = new AtomicInteger(maxId);
+
+        // Create new task
+        Task task = new Task();
+        task.setDescription(description);
+        task.setId(count.incrementAndGet());
+        task.setCreatedAt(ZonedDateTime.now(zone).truncatedTo(ChronoUnit.SECONDS));
+        task.setUpdatedAt(ZonedDateTime.now(zone).truncatedTo(ChronoUnit.SECONDS));
+        task.setStatus(Task.Status.TODO);
+        tasks.add(task);
+        System.out.println("Task added successfully (ID: " + task.getId() + ")");
+
+        return tasks;
     }
 }
