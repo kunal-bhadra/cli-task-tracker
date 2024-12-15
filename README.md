@@ -1,55 +1,40 @@
-# CLI Task Tracker
-This is a CLI application to track your tasks, developed in Java.
+# Task Tracker CLI
+This is a CLI application to add, update, delete, list and mark your tasks as done.
 
-## Project Requirements
-The application should run from the command line, accept user actions and inputs as arguments, and store the tasks in a JSON file. The user should be able to:
+## More Details
+- this was developed in Java, without the use of any external libraries
+- the list of tasks is stored in a JSON file and all commands except `list` updates this file 
+- regex was used to parse the JSON file since there is no nesting in the Task entry
+- this was a learning exercise to get familiar with coding in Java
 
-- Add, Update, and Delete tasks
-- Mark a task as in progress or done
-- List all tasks
-- List all tasks that are done
-- List all tasks that are not done
-- List all tasks that are in progress 
+## Quickstart
+Environment: Java 21\
+External Libraries: N/A\
+`java-compile` alias: `$ javac -d out/production/cli-task-tracker src/main/java/Main.java`\
+`java-run` alias: `$ java -cp out/production/cli-task-tracker main.java.Main`
 
-Here are some constraints to guide the implementation:
-- You can use any programming language to build this project.
-- Use positional arguments in command line to accept user inputs.
-- Use a JSON file to store the tasks in the current directory.
-- The JSON file should be created if it does not exist.
-- Use the native file system module of your programming language to interact with the JSON file.
-- Do not use any external libraries or frameworks to build this project.
-- Ensure to handle errors and edge cases gracefully.
+- Add a new task\
+`$ java-run add "Hello World"`
 
-Each task should have the following properties:
-- id: A unique identifier for the task
-- description: A short description of the task
-- status: The status of the task (todo, in-progress, done)
-- createdAt: The date and time when the task was created
-- updatedAt: The date and time when the task was last updated
 
-# Example
-The list of commands and their usage is given below:
-- Adding a new task\
-`task-cli add "Buy groceries"`\
-Output: Task added successfully (ID: 1)
+- Update a Task\
+`$ java-run update 1 "20 eggs"`
 
-- Updating and deleting tasks\
-`task-cli update 1 "Buy groceries and cook dinner"`\
-`task-cli delete 1`
 
-- Marking a task as in progress or done\
-`task-cli mark-in-progress 1`\
-`task-cli mark-done 1`
+- Delete a Task\
+`$ java-run delete 3`
 
-- Listing all tasks\
-`task-cli list`
 
-- Listing tasks by status\
-`task-cli list done`\
-`task-cli list todo`\
-`task-cli list in-progress`
+- Mark a task as in progress or done\
+`$ java-run mark-in-progress 1`\
+`$ java-run mark-done 2`
 
-# Interacting in CLI (Dev)
-From the root directory, execute the following commands to:
-- compile: `$ javac -d out/production/cli-task-tracker src/main/java/Main.java`
-- run: `$ java -cp out/production/cli-task-tracker main.java.Main hello world`
+
+- List all tasks\
+`$ java-run list`
+
+
+- List tasks by status\
+`$ java-run list done`\
+`$ java-run list todo`\
+`$ java-run list in-progress`
