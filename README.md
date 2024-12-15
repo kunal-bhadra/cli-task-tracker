@@ -5,7 +5,7 @@ This is a CLI application to add, update, delete, list and mark your tasks as do
 - this was developed in Java, without the use of any external libraries
 - the list of tasks is stored in a JSON file and all commands except `list` updates this file 
 - regex was used to parse the JSON file since there is no nesting in the Task entry
-- this was a learning exercise to get familiar with coding in Java
+- this was a [learning exercise](https://roadmap.sh/projects/task-tracker) to get familiar with coding in Java
 
 ## Quickstart
 Environment: Java 21\
